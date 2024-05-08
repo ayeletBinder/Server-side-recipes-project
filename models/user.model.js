@@ -9,6 +9,6 @@ role:{type:Boolean,required:true}
 })
 module.exports.userSchema=mongoose.model("User",userSchema);
 
-exports.generateToken=(user)=>{
-
+module.exports.generateToken=(user)=>{
+    const privateKey= process.env.JWt_
 }
