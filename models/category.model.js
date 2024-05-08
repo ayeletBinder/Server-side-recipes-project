@@ -6,5 +6,4 @@ const categorySchema=({
     recipes:{type:[{id:{type:Number},name:{type:String,required:true},images:{type:[String]}}]} //recipes - שם, תמונה ,ID
 })
 
-
-module.exports.categorySchema=mongoose.Schema('category',categorySchema);
+module.exports.category=mongoose.model('category',categorySchema);

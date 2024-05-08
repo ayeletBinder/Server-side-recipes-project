@@ -8,7 +8,14 @@ exports.addCategory=async(req,res,next)=>{
     } catch (error) {
         next(error);
     }
-}
+};
+exports.updateRecipeInCategory=async(req,res,next)=>{
+    try {
+        
+    } catch (error) {
+        next(error);
+    }
+};
 exports.getAllCategory=async(req,res,next)=>{
     try {
         const r=await Category.find({},{name:1});

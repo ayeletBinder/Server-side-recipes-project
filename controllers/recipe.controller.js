@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const {Recipe} =require('../models/recipe.model');
 const {Category} =require('../models/category.model');
-const { addCategory } = require('./category.controller');
+const { addCategory, updateRecipeInCategory } = require('./category.controller');
 
 exports.getAllRecipe=async(req,res,next)=>{
     let {search,perPage,page}=req.query;
@@ -59,15 +59,16 @@ exports.addRecipe=async(req,res,next)=>{
         return res.status(201).json(r)
         //להכניס למערך מתכונים שבתוך הקטגוריות את המתכון
         // ?? update    
+        updateRecipeInCategory(req.body);
+
     } catch (error) {
         next(error);
     }
     
     // user:{type:{id:{type:Number},name:{type:String}}}
 }
-
+//צריך לעדכן ג"כ בקטגוריה?
 exports.updateRecipe=async(req,res,next)=>{
-    // const {name,description,category,preparationTime,DifficultyLevel,Addeddate,layers,instructions,images,IsPrivate} = req.body;
     const {id} = req.params.id;
     if(!mongoose.Types.ObjectId.isValid(id))
         next({message:'id is not valid'})

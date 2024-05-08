@@ -15,4 +15,4 @@ const recipeSchema=mongoose.Schema({
     user:{type:{id:{type:Number},name:{type:String}}}
 })
 
-module.exports.recipeSchema=mongoose.Schema('recipe',recipeSchema);
+module.exports.recipe=mongoose.model('recipe',recipeSchema);

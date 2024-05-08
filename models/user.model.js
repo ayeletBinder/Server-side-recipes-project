@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const jwt =require('jsonwebtoken');
 
 const userSchema=new mongoose.Schema({
 name:{type:String,required:[true,"name is required"]},
@@ -7,8 +8,12 @@ email:{type:String,required:[ true, 'Email address is required'],unique: true},/
 address:{type:String,default:"israel"},
 role:{type:Boolean,required:true}
 })
-module.exports.userSchema=mongoose.model("User",userSchema);
+
+module.exports.user=mongoose.model("User",userSchema);
 
 module.exports.generateToken=(user)=>{
-    const privateKey= process.env.JWt_
+    const privateKey= process.env.JWT_SECRET||'JWT_SECRET';
+    const data={role:user.role,user_id:user._id};
+    const token=jwt.sign(data,privateKey,{expiresIn:'1h'});
+    return token;
 }
