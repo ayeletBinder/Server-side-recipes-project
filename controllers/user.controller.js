@@ -1,7 +1,10 @@
 const bcrypt=require('bcrypt');
-const User=require("../models/user.model")
+const {User, generateToken}=require("../models/user.model")
 
 exports.signIn=async (req,res,next)=>{
+    const v=User.userValidator.signIn.validate(req.body);
+    if(v.error)
+        next({message:v.error.message});
     const {email,password}=req.body;
     const user = await User.findOne({email})
     if(user){
@@ -10,32 +13,35 @@ exports.signIn=async (req,res,next)=>{
                return next(new Error(err.message));
             }
             if(same){
-                const token=User.generateToken(user);
-                user.password="****"
+                const token=generateToken(user);
+                user.password="****";
                 return res.send({user,token});
             }
-            return res.next({message:'auth failed',status:401});
+            return res.send({message:'auth failed',status:401});
         })
     }
     else{
-        return res.next({message:'auth failed',status:401});
+        return next({message:'auth failed',status:401});
     }
 }
 
 exports.signUp= async (req,res,next)=>{
    const {name,password,email,address,role} = req.body;
     try {
-        const user=new User(name,password,email,address,role);
+        const user=new User({name,password,email,address,role});
         await user.save();
         const token=User.generateToken(user);
         user.password='****';
         return res.status(201).json({user,token});
     } catch (error) {
-        return res.next({message:error.message,status:409})
+        return next({message:error.message,status:409});
     }
 }
 
 exports.updateUser=async(req,res,next)=>{
+    const v=User.userValidator.signUp.validate(req.body);
+    if(v.error)
+        return next({message:v.error.message});
     const { id }=req.params;
     const userUpdate=req.body;
     try {
@@ -55,5 +61,21 @@ exports.updateUser=async(req,res,next)=>{
         }
     } catch (error) {
         next(error);
+    }
+}
+
+//get
+exports.getAllUsers = async(req,res,next) => {
+    exports.getAllUsers = async(req,res,next) => {
+        try {
+            // Fetch all users, excluding the "__v" field, and hiding the "password" field
+            const users = await User.find({}, { password: 0, __v: 0 });
+    
+            // Send the users as JSON response
+            res.json(users);
+        } catch (error) {
+            // Pass any errors to the error handling middleware
+            next(error);
+        }
     }
 }

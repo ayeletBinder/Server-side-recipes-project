@@ -1,0 +1,57 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "users",
+    "collectionId": "5984a301-b0ca-4a36-8788-542fcc35f26c",
+    "dateExported": "2024-05-09T08:11:21.770Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "10b58c00-b6ea-4cc1-a44f-5b4d41aa3930",
+            "colId": "5984a301-b0ca-4a36-8788-542fcc35f26c",
+            "containerId": "",
+            "name": "signIn",
+            "url": "http://localhost:5000/users/signin",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-05-09T07:50:45.424Z",
+            "modified": "2024-05-09T08:01:50.796Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"\" ,\n  \"password\":\"\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6e9556b1-015e-4f09-ae8b-ee252b795d0c",
+            "colId": "5984a301-b0ca-4a36-8788-542fcc35f26c",
+            "containerId": "",
+            "name": "signUp",
+            "url": "http://localhost:5000/users/signup",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-05-09T07:51:11.374Z",
+            "modified": "2024-05-09T08:03:35.116Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"\",\n  \"password\":\"\",\n  \"email\":\"\",\n  \"address\":\"\",\n  \"role\":\"\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "5aadcb12-1da4-468d-903a-1bec0aaa5776",
+            "colId": "5984a301-b0ca-4a36-8788-542fcc35f26c",
+            "containerId": "",
+            "name": "get all users",
+            "url": "http://localhost:5000/users",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-05-09T07:51:47.494Z",
+            "modified": "2024-05-09T07:51:58.240Z",
+            "headers": []
+        }
+    ],
+    "ref": "xFe8aCELwf6WZVWieiGXm6W8dE3mdaJ_33l3SYo3HFg-Bt5YJN3xl1TelkfJP3_m7UK8yGNiQLHk1MOy7ZO96w"
+}

@@ -1,0 +1,47 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "categories",
+    "collectionId": "eaf96f8c-0387-437e-a37a-d9ac56ca2ff0",
+    "dateExported": "2024-05-09T08:11:51.801Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "238619ca-67c8-4497-baef-8bbfddb9c0a5",
+            "colId": "eaf96f8c-0387-437e-a37a-d9ac56ca2ff0",
+            "containerId": "",
+            "name": "category/withRecipes",
+            "url": "http://localhost:5000/categories/withRecipes",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-09T07:44:47.135Z",
+            "modified": "2024-05-09T07:49:02.988Z",
+            "headers": []
+        },
+        {
+            "_id": "56196484-8d72-4e00-9349-23e552c5035e",
+            "colId": "eaf96f8c-0387-437e-a37a-d9ac56ca2ff0",
+            "containerId": "",
+            "name": "categoryById",
+            "url": "http://localhost:5000/categories/:id",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-09T07:45:16.902Z",
+            "modified": "2024-05-09T07:49:10.367Z",
+            "headers": []
+        },
+        {
+            "_id": "3dcb4e65-2a00-4bf0-a872-b2c29b37fb81",
+            "colId": "eaf96f8c-0387-437e-a37a-d9ac56ca2ff0",
+            "containerId": "",
+            "name": "get all",
+            "url": "http://localhost:5000/categories",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-09T07:47:30.657Z",
+            "modified": "2024-05-09T07:49:15.352Z",
+            "headers": []
+        }
+    ],
+    "ref": "RIdxPWu3Z4Ulks4kBAmRBwh8F1aQrJqb7FoMGMS1m6u3nVrcjzqsiRchDnjE9_FQ4j5MoRLj5GMrU__qBetJ3g"
+}

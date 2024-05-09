@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const {Recipe} =require('../models/recipe.model');
+const {Recipe, recipeValidator} =require('../models/recipe.model');
 const {Category} =require('../models/category.model');
 const { addCategory, updateRecipeInCategory } = require('./category.controller');
 
@@ -32,21 +32,22 @@ exports.getRecipeById=async(req,res,next)=>{
     }
 }
 
-// exports.getByUser מה צריך לעשות??
+// מה צריך לעשות?
+// exports.getToUser=async(req,res,next)=>{
+// }
 
 exports.getRecipeByPreparationTime=async(req,res,next)=>{
-    const time = req.body.time;
-    if ( typeof time == 'number' && time >= 0 ){
+    let {time} = req.query;
+    time ??= Math.max();
         const recipes= await Recipe.find({preparationTime:{$lte:time}})
         .then( recipes.json())
         .catch( (err)=> next(err));
-    }
-    else{
-        next({massage:'time is only number and bigger then zero'});
-    }
 }
 
 exports.addRecipe=async(req,res,next)=>{
+    const v=recipeValidator.addRecipe.validate(req.body);
+    if(v.error)
+        next({message:v.error.message});
     let c=Category.GetAllCategory().find({category:req.body.category});
     try {
         if(!c){
@@ -60,13 +61,13 @@ exports.addRecipe=async(req,res,next)=>{
         //להכניס למערך מתכונים שבתוך הקטגוריות את המתכון
         // ?? update    
         updateRecipeInCategory(req.body);
-
     } catch (error) {
         next(error);
     }
     
     // user:{type:{id:{type:Number},name:{type:String}}}
 }
+
 //צריך לעדכן ג"כ בקטגוריה?
 exports.updateRecipe=async(req,res,next)=>{
     const {id} = req.params.id;

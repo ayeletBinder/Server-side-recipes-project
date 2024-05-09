@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const {Category} =require('../models/category.model');
+const { recipe } = require('../models/recipe.model');
 
 //לעשות כך?
 exports.addCategory=async(req,res,next)=>{
@@ -16,10 +17,10 @@ exports.updateRecipeInCategory=async(req,res,next)=>{
         next(error);
     }
 };
-exports.getAllCategory=async(req,res,next)=>{
+exports.getAllCategory = async (req, res, next) => {
     try {
-        const r=await Category.find({},{name:1});
-        return req.json(r);
+        const categories = await Category.find({}, { name: 1 });
+        return res.json(categories);
     } catch (error) {
         next(error);
     }
@@ -27,7 +28,9 @@ exports.getAllCategory=async(req,res,next)=>{
 //אמור להגיע לי ממש מתכון או רק פרטי המתכון שנשמרו לי בקטגוריה?
 exports.getAllCategoryWithRecipes=async(req,res,next)=>{
     try {
-        const r=await Category.find({});
+        const r=await Category.find()
+        // .populate('recipe',)
+        // .select('-__v')
         return req.json(r);
     } catch (error) {
         next(error);

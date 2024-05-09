@@ -1,0 +1,100 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "recipes",
+    "collectionId": "9c908127-b6a4-4a9d-b01b-ebef34ae4e76",
+    "dateExported": "2024-05-09T08:12:01.119Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "33efe014-b897-49be-a8e7-c485d7eeb965",
+            "colId": "9c908127-b6a4-4a9d-b01b-ebef34ae4e76",
+            "containerId": "",
+            "name": "recipesById",
+            "url": "http://localhost:5000/recipes/:id",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2024-05-09T07:42:13.577Z",
+            "modified": "2024-05-09T07:49:35.710Z",
+            "headers": []
+        },
+        {
+            "_id": "0747878c-49b6-4bbc-ad21-f1586e730f3d",
+            "colId": "9c908127-b6a4-4a9d-b01b-ebef34ae4e76",
+            "containerId": "",
+            "name": "get all recipes",
+            "url": "http://localhost:5000/recipes",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-05-09T07:43:54.308Z",
+            "modified": "2024-05-09T07:50:09.429Z",
+            "headers": []
+        },
+        {
+            "_id": "13d65d29-f7cc-4113-9d4a-8508efa39411",
+            "colId": "9c908127-b6a4-4a9d-b01b-ebef34ae4e76",
+            "containerId": "",
+            "name": "recipes with time",
+            "url": "http://localhost:5000/recipes?time=",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-05-09T07:56:41.076Z",
+            "modified": "2024-05-09T07:56:57.579Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "time",
+                    "value": "",
+                    "isPath": false
+                }
+            ]
+        },
+        {
+            "_id": "2aea5853-977a-40ae-860d-9d9051992fd6",
+            "colId": "9c908127-b6a4-4a9d-b01b-ebef34ae4e76",
+            "containerId": "",
+            "name": "add recipe",
+            "url": "http://localhost:5000/recipes",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2024-05-09T07:57:19.585Z",
+            "modified": "2024-05-09T08:10:34.268Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"\",\n\"description\":\"\",\n\"category\":\"\",\n\"preparationTime\":60,\n\"DifficultyLevel\":1,\n\"Addeddate\":\"09.05.2024\",\n\"layers\":[],\n\"instruction\":\"\",\n\"images\":[\"\"],\n\"IsPrivate\":false,\n\"user\":{}\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "21010523-eac8-403e-a3f6-f043fb9567fe",
+            "colId": "9c908127-b6a4-4a9d-b01b-ebef34ae4e76",
+            "containerId": "",
+            "name": "update recipe",
+            "url": "http://localhost:5000/recipes/:id",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2024-05-09T07:58:47.746Z",
+            "modified": "2024-05-09T08:11:10.993Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"\",\n\"description\":\"\",\n\"category\":\"\",\n\"preparationTime\":60,\n\"DifficultyLevel\":1,\n\"Addeddate\":\"09.05.2024\",\n\"layers\":[],\n\"instruction\":\"\",\n\"images\":[\"\"],\n\"IsPrivate\":false,\n\"user\":{}\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "c2ad3f12-1cb7-4f42-b0e1-87cae8d121bb",
+            "colId": "9c908127-b6a4-4a9d-b01b-ebef34ae4e76",
+            "containerId": "",
+            "name": "delete recipe",
+            "url": "http://localhost:5000/recipes/:id",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2024-05-09T07:59:52.693Z",
+            "modified": "2024-05-09T08:00:05.396Z",
+            "headers": []
+        }
+    ],
+    "ref": "Mn33veX7YMpY0IecRwDAvWgTLb6ImmavwOzd0JGYxc_2kH-spCzyIOt2cmxm6mWqJCiXj_wCYZEjG0iYY_pE9A"
+}

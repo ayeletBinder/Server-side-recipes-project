@@ -7,13 +7,13 @@ router.get("/",getAllRecipe);
 
 router.get("/:id",getRecipeById);
 
-router.get("/",getRecipeByPreparationTime);//time?
+router.get("/",getRecipeByPreparationTime);
 
 // router.get("/with/")
 
 router.post("/",addRecipe);
 
-router.put("/:id",updateRecipe);
+router.patch("/:id",updateRecipe);
 
 router.delete("/:id",deleteRecipe);
 

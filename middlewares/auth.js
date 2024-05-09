@@ -12,3 +12,5 @@ exports.auth=(req,res,next)=>{
         next({message:error,status:401});
     }
 };
+
+

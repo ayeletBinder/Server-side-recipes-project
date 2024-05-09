@@ -11,6 +11,7 @@ require('dotenv').config();
 require('./config/db')
 
 const app =express();
+app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());
 
@@ -22,7 +23,7 @@ app.use('/images',express.static('uploads'));
 
 app.use("/users",userRouter);
 app.use("/recipes",recipeRouter);
-app.use("/categorys",categoryRouter);
+app.use("/categories",categoryRouter);
 
 app.use(pageNotFound);
 app.use(serverNotFound);
