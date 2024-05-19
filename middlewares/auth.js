@@ -13,4 +13,17 @@ exports.auth=(req,res,next)=>{
     }
 };
 
+exports.authUser=(req,res,next)=>{
+    // if(req.user.role == null){
+    //     res.send('you have to logIn');
+    // }
+    // next();
+}
+
+exports.authAdmin=(req,res,next)=>{
+    // if(req.user.role != 'admin'){
+    //     res.send('you are not admin');
+    // }
+    // next();
+}
 

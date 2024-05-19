@@ -13,7 +13,7 @@ const recipeSchema=mongoose.Schema({
     instructions:{type:String},
     images:{type:[String]},
     IsPrivate:{type:Boolean},
-    user:{type:{id:{type:Number},name:{type:String}}}
+    user:{type:{id:{type:mongoose.Types.ObjectId},name:{type:String},images:{type:[String]}}}//להכניס לתוך סכמה או ככה ? 
 })
 
 module.exports.recipe=mongoose.model('recipe',recipeSchema);

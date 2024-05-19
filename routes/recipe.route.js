@@ -1,5 +1,6 @@
 const express=require('express');
 const { getAllRecipe, getRecipeById, getRecipeByPreparationTime, addRecipe, deleteRecipe, updateRecipe } = require('../controllers/recipe.controller');
+const { authUser, auth } = require('../middlewares/auth');
 
 const router=express.Router();
 
@@ -11,10 +12,10 @@ router.get("/",getRecipeByPreparationTime);
 
 // router.get("/with/")
 
-router.post("/",addRecipe);
+router.post("/",addRecipe);//admin && user
 
-router.patch("/:id",updateRecipe);
+router.patch("/:id",authUser,updateRecipe);//admin && id user
 
-router.delete("/:id",deleteRecipe);
+router.delete("/:id",authUser,deleteRecipe);//admin && id user 
 
 module.exports=router;

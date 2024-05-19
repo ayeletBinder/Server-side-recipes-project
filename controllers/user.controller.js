@@ -1,8 +1,8 @@
 const bcrypt=require('bcrypt');
-const {User, generateToken}=require("../models/user.model")
+const {User, generateToken, userValidator}=require("../models/user.model")
 
 exports.signIn=async (req,res,next)=>{
-    const v=User.userValidator.signIn.validate(req.body);
+    const v=userValidator.signIn.validate(req.body);
     if(v.error)
         next({message:v.error.message});
     const {email,password}=req.body;
@@ -30,7 +30,7 @@ exports.signUp= async (req,res,next)=>{
     try {
         const user=new User({name,password,email,address,role});
         await user.save();
-        const token=User.generateToken(user);
+        const token=generateToken(user);
         user.password='****';
         return res.status(201).json({user,token});
     } catch (error) {
@@ -65,17 +65,16 @@ exports.updateUser=async(req,res,next)=>{
 }
 
 //get
-exports.getAllUsers = async(req,res,next) => {
-    exports.getAllUsers = async(req,res,next) => {
-        try {
-            // Fetch all users, excluding the "__v" field, and hiding the "password" field
-            const users = await User.find({}, { password: 0, __v: 0 });
-    
-            // Send the users as JSON response
-            res.json(users);
-        } catch (error) {
-            // Pass any errors to the error handling middleware
-            next(error);
+ exports.getAllUsers = async(req,res,next) => {
+     try {
+        if(req.user.role==="admin"){
+         const users = await User.find({}, { password: 0, __v: 0 });
+         res.json(users);
         }
-    }
-}
+        else{
+            next({message:"only the admin can see the uses list"});
+        }
+     } catch (error) {
+         next(error);
+     }
+ }

@@ -2,6 +2,7 @@ const mongoose=require('mongoose');
 const {Recipe, recipeValidator} =require('../models/recipe.model');
 const {Category} =require('../models/category.model');
 const { addCategory, updateRecipeInCategory } = require('./category.controller');
+const { User } = require('../models/user.model');
 
 exports.getAllRecipe=async(req,res,next)=>{
     let {search,perPage,page}=req.query;
@@ -32,9 +33,16 @@ exports.getRecipeById=async(req,res,next)=>{
     }
 }
 
-// מה צריך לעשות?
-// exports.getToUser=async(req,res,next)=>{
-// }
+exports.getByUserId=async(req,res,next)=>{
+    const { id } = req.params;
+    const user = User.findById({_id:id});
+    if(id != req.user.id );
+    {
+        return next({message:'you dont have allow'});
+    }
+    const recipes=Recipe.find({user:{id:id}});
+    res.send(recipes);
+}
 
 exports.getRecipeByPreparationTime=async(req,res,next)=>{
     let {time} = req.query;
@@ -44,30 +52,26 @@ exports.getRecipeByPreparationTime=async(req,res,next)=>{
         .catch( (err)=> next(err));
 }
 
-exports.addRecipe=async(req,res,next)=>{
-    const v=recipeValidator.addRecipe.validate(req.body);
-    if(v.error)
-        next({message:v.error.message});
-    let c=Category.GetAllCategory().find({category:req.body.category});
-    try {
-        if(!c){
-            //יצירת הקטגוריה
-            addCategory(req.body.category);
-        }
-        //להכניס למתכונים את המתכון
+exports.getByUserId=async(req,res,next)=>{
+    const { id } = req.params;
+    const user = User.findById({_id:id});
+    if(id != req.user.id );
+    {
+        return next({message:'you dont have allow'});
+    }
+    try{
         const r=new Recipe(req.body);
         await r.save();
         return res.status(201).json(r)
         //להכניס למערך מתכונים שבתוך הקטגוריות את המתכון
         // ?? update    
         updateRecipeInCategory(req.body);
-    } catch (error) {
-        next(error);
-    }
-    
-    // user:{type:{id:{type:Number},name:{type:String}}}
+        } catch (error) {
+            next(error);
+        }
+    const recipes=Recipe.find({user:{id:id}});
+    res.send(recipes);
 }
-
 //צריך לעדכן ג"כ בקטגוריה?
 exports.updateRecipe=async(req,res,next)=>{
     const {id} = req.params.id;
