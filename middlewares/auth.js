@@ -2,7 +2,7 @@ const jwt=require("jsonwebtoken");
 
 exports.auth=(req,res,next)=>{
     try {
-    const {authorization} =req.header;
+    const { authorization } = req.headers;
     const [,token]=authorization.split(' ');
     const privateKey=process.env.JWT_SECRET ||'JWT_SECRET';
     const data= jwt.verify(token,privateKey);
@@ -13,17 +13,4 @@ exports.auth=(req,res,next)=>{
     }
 };
 
-exports.authUser=(req,res,next)=>{
-    // if(req.user.role == null){
-    //     res.send('you have to logIn');
-    // }
-    // next();
-}
-
-exports.authAdmin=(req,res,next)=>{
-    // if(req.user.role != 'admin'){
-    //     res.send('you are not admin');
-    // }
-    // next();
-}
 
