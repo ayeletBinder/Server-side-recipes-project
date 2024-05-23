@@ -104,14 +104,18 @@ exports.deleteRecipe = async (req, res, next) => {
         next({ message: 'id is not valid' });
     else {
         try {
-            const idr = await Recipe.findById(id)
-            if (!idr)
-                return next({ message: 'recipe is not fount' });
-            if(req.user.role === "admin" )//|| req.user.role ===idr.user.role האם יש לו הרשאת גישה למחוק מתכון...
-            await Recipe.findByIdAndDelete(id);
-            return res.status(204).send();
-        } catch (error) {
+            const recipeToDelete = await Recipe.findById(id);
+            if (!recipeToDelete) {
+              return next({ message: 'recipe is not found' });
+            }
+            if (req.user.role === "admin" || req.user.role ===recipeToDelete.user.role) { // Check authorization
+              await Recipe.findByIdAndDelete(id); // Await deletion
+              return res.status(204).send(); // Send response after deletion
+            } else {
+              return next({ message: 'Unauthorized to delete this recipe' });
+            }
+          } catch (error) {
             return next(error);
-        }
+          }
     }
 }
