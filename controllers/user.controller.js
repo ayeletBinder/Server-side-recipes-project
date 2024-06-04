@@ -26,9 +26,9 @@ exports.signIn=async (req,res,next)=>{
 }
 
 exports.signUp= async (req,res,next)=>{
-   const {name,password,email,address,role} = req.body;
+   const {name,password,email,address} = req.body;
     try {
-        const user=new User({name,password,email,address,role});
+        const user=new User({name,password,email,address,role:'user'});
         await user.save();
         const token=generateToken(user);
         user.password='****';
