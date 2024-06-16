@@ -41,7 +41,7 @@ exports.getAllCategoryWithRecipes=async(req,res,next)=>{
 
 //כנ"ל
 
-exports.getAllCategoryWithRecipesByName=async(req,res,next)=>{
+exports.getAllCategoryWithRecipesById=async(req,res,next)=>{
     const id = req.params.id;
     if (!mongoose.Types.ObjectId.isValid(id))
         next({ message: 'id is not valid' })

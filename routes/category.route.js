@@ -1,10 +1,10 @@
 const express=require('express');
-const { getAllCategory, getAllCategoryWithRecipes, getAllCategoryWithRecipesByName } = require('../controllers/category.controller');
+const { getAllCategory, getAllCategoryWithRecipes,  getAllCategoryWithRecipesById } = require('../controllers/category.controller');
 
 const router=express.Router();
 
 router.get("/",getAllCategory);
 router.get("/withRecipes",getAllCategoryWithRecipes);
-router.get("/:id",getAllCategoryWithRecipesByName);
+router.get("getAllCategoryWithRecipesById/:id",getAllCategoryWithRecipesById);
 
 module.exports=router;

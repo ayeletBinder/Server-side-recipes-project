@@ -12,7 +12,11 @@ exports.getAllRecipe = async (req, res, next) => {
     page ??= 1;
 
     try {
-        const recipes = await Recipe.find({ name: new RegExp(search) })
+      //  { $match: {IsPrivate:false} }
+        const recipes = await Recipe.find({
+          name: new RegExp(search),
+          IsPrivate: false 
+        })
             .skip((page - 1) * perPage)
             .limit(perPage)
             .select('-__v');
@@ -35,14 +39,14 @@ exports.getRecipeById = async (req, res, next) => {
 
 exports.getByUserId = async (req, res, next) => {
     const { id } = req.params;
-    const user = User.findById({ _id: id });
-    if (id != req.user.id);
-    {
-        return next({ message: 'you dont have allow' });
-    }
-    const recipes = Recipe.find({ user: { id: id } });
-    res.send(recipes);
+    try {
+    const recipes = await Recipe.find({user:{_id:id}});
+      return res.json(recipes);
+  } catch (error) {
+      next(error);
+  }
 }
+
 
 exports.getRecipeByPreparationTime = async (req, res, next) => {
     let { time } = req.query;
@@ -54,7 +58,7 @@ exports.getRecipeByPreparationTime = async (req, res, next) => {
 //איך לשים את הUSER בתוך המקום?
 exports.addRecipe = async (req, res, next) => {
     try {
-      if (req.user.role === null) {
+      if (req.token === null) {
         return next({ message: 'You are not authorized to add recipes for this user.', status: 401 });
       }
       const recipe = new Recipe(req.body);

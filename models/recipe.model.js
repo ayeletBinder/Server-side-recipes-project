@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 const joi=require('joi')
 
 const userMiniSchema=mongoose.Schema({
-    _id:{type:mongoose.Types.ObjectId,ref:"recipe"},
+    _id:{type:mongoose.Types.ObjectId,ref:"users"},
     name:{type:String},
     images:{type:[String]}
 })
