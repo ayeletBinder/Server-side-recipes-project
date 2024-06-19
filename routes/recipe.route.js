@@ -13,7 +13,7 @@ router.get("/",getAllRecipe);
 router.get("/time",getRecipeByPreparationTime);
 
 
-router.post("/",addRecipe);//admin && user//שגיאה !!!
+router.post("/",auth,addRecipe);//admin && user//שגיאה !!!
 
 router.patch("/:id",auth,updateRecipe);//admin && id user
 
