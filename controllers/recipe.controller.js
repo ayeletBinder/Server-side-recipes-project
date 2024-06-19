@@ -38,9 +38,10 @@ exports.getRecipeById = async (req, res, next) => {
 }
 
 exports.getByUserId = async (req, res, next) => {
-    const { id } = req.params;
+    let  id  = req.params.id;
+    id=id.slice(1,id.length);
     try {
-    const recipes = await Recipe.find({user:{_id:id}});
+    const recipes = await Recipe.find({"user._id":id});
       return res.json(recipes);
   } catch (error) {
       next(error);
@@ -55,6 +56,7 @@ exports.getRecipeByPreparationTime = async (req, res, next) => {
         .then(r=>{res.json(r);})
         .catch((err) => { next(err)});
 }
+
 //איך לשים את הUSER בתוך המקום?
 exports.addRecipe = async (req, res, next) => {
     try {
@@ -74,9 +76,7 @@ exports.addRecipe = async (req, res, next) => {
         category.recipes.push(recipe);
         await category.save();
         console.log("recipes",category.recipes);
-  
       }
-     
       await recipe.save();
       res.status(201).json(recipe);
     } catch (error) {
