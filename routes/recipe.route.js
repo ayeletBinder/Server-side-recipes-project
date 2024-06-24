@@ -1,8 +1,11 @@
 const express=require('express');
-const { getAllRecipe, getRecipeById, getRecipeByPreparationTime, addRecipe, deleteRecipe, updateRecipe, getByUserId } = require('../controllers/recipe.controller');
+const { getAllRecipe, getRecipeById, getRecipeByPreparationTime, addRecipe, deleteRecipe, updateRecipe, getByUserId, deleteAllRecipe } = require('../controllers/recipe.controller');
 const { auth } = require('../middlewares/auth');
+const { upload } = require('../middlewares/uploudFile');
 
 const router=express.Router();
+
+router.delete("/deleteAllRecipe",auth,deleteAllRecipe);//admin && id user 
 
 router.get("/getByUserId/:id",getByUserId);
 
@@ -12,10 +15,9 @@ router.get("/",getAllRecipe);
 
 router.get("/time",getRecipeByPreparationTime);
 
+router.post("/",auth,upload.single('img'),addRecipe);//admin && user//שגיאה !!!
 
-router.post("/",auth,addRecipe);//admin && user//שגיאה !!!
-
-router.patch("/:id",auth,updateRecipe);//admin && id user
+router.patch("/:id",auth,upload.single('img'),updateRecipe);//admin && id user
 
 router.delete("/:id",auth,deleteRecipe);//admin && id user 
 

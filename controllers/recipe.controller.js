@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-const { Recipe, recipeValidator } = require('../models/recipe.model');
+const { Recipe } = require('../models/recipe.model');
 const { Category } = require('../models/category.model');
-const { addCategory, updateRecipeInCategory } = require('./category.controller');
-const { User } = require('../models/user.model');
+const fs = require('fs');
 
 exports.getAllRecipe = async (req, res, next) => {
     let { search, perPage, page } = req.query;
@@ -12,7 +11,6 @@ exports.getAllRecipe = async (req, res, next) => {
     page ??= 1;
 
     try {
-      //  { $match: {IsPrivate:false} }
         const recipes = await Recipe.find({
           name: new RegExp(search),
           IsPrivate: false 
@@ -20,9 +18,17 @@ exports.getAllRecipe = async (req, res, next) => {
             .skip((page - 1) * perPage)
             .limit(perPage)
             .select('-__v');
+          //   for (let i = 0; i < recipes.length; i++) {
+          //     const element = recipes[i];
+          //     if (element.images){
+          //       console.log("before image",recipes[i].images);
+          //         recipes[i].images = readImageToBase64(recipes[i].images)
+          //       console.log("after image",recipes[i].images);}
+          // }
         return res.json(recipes)
     } catch (error) {
         return next(error);
+        console.log("perror",error);
     }
 }
 
@@ -32,6 +38,8 @@ exports.getRecipeById = async (req, res, next) => {
         next({ message: 'id is not valid' });
     else {
         const recipe = await Recipe.findById({_id:idRecipe}, { __v: false })
+          // if (recipe.images)
+          //   recipe.images= readImageToBase64(recipe.images)
             .then(r=>{res.json(r);})
             .catch(err => {next({ massage: 'the recipe didnt found', status: 404 })});
     }
@@ -42,6 +50,11 @@ exports.getByUserId = async (req, res, next) => {
     id=id.slice(1,id.length);
     try {
     const recipes = await Recipe.find({"user._id":id});
+    // for (let i = 0; i < recipes.length; i++) {
+    //         const element = recipes[i];
+    //         if (element.images)
+    //             recipes[i].images = readImageToBase64(recipes[i].images)
+    //     }
       return res.json(recipes);
   } catch (error) {
       next(error);
@@ -59,6 +72,7 @@ exports.getRecipeByPreparationTime = async (req, res, next) => {
 
 //איך לשים את הUSER בתוך המקום?
 exports.addRecipe = async (req, res, next) => {
+  
     try {
       if (req.token === null) {
         return next({ message: 'You are not authorized to add recipes for this user.', status: 401 });
@@ -121,5 +135,42 @@ exports.deleteRecipe = async (req, res, next) => {
           } catch (error) {
             return next(error);
           }
+    }
+}
+
+
+const path = `${__dirname}/uploads`.replace('\\controllers', '')
+
+function readImageToBase64(images) {
+    // בדיקה אם הנתיב לתמונה קיים
+    if (!fs.existsSync(`${path}/${images}`)) {
+        // throw new Error(`Image path ${imagePath} does not exist.`);
+        return ''
+    }
+
+    // קריאת התמונה כקובץ בינארי
+
+    const imageBuffer = fs.readFileSync(`${path}/${images}`);
+
+    // המרת נתוני התמונה למחרוזת Base64
+    const base64String = Buffer.from(imageBuffer).toString('base64');
+
+    return 'data:image/jpeg;base64,' + base64String;
+}
+
+exports.deleteAllRecipe = async (req, res, next) => {
+  try {
+      const recipeToDelete = await Recipe.find();
+      if (!recipeToDelete) {
+        return next({ message: 'recipe is not found' });
+      }
+      // if (req.user.role === "admin" || req.user.role ===recipeToDelete.user.role) { // Check authorization
+        await Recipe.deleteMany({}); // Await deletion
+        return res.status(204).send(); // Send response after deletion
+      // } else {
+        // return next({ message: 'Unauthorized to delete this recipe' });
+      // }
+    } catch (error) {
+      return next(error);
     }
 }
