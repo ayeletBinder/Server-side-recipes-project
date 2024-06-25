@@ -15,9 +15,9 @@ router.get("/",getAllRecipe);
 
 router.get("/time",getRecipeByPreparationTime);
 
-router.post("/",auth,upload.single('img'),addRecipe);//admin && user//שגיאה !!!
+router.post("/",auth,upload.single('image'),addRecipe);//admin && user//שגיאה !!!
 
-router.patch("/:id",auth,upload.single('img'),updateRecipe);//admin && id user
+router.patch("/:id",auth,upload.single('image'),updateRecipe);//admin && id user
 
 router.delete("/:id",auth,deleteRecipe);//admin && id user 
 

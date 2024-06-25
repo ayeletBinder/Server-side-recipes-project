@@ -18,13 +18,13 @@ exports.getAllRecipe = async (req, res, next) => {
             .skip((page - 1) * perPage)
             .limit(perPage)
             .select('-__v');
-          //   for (let i = 0; i < recipes.length; i++) {
-          //     const element = recipes[i];
-          //     if (element.images){
-          //       console.log("before image",recipes[i].images);
-          //         recipes[i].images = readImageToBase64(recipes[i].images)
-          //       console.log("after image",recipes[i].images);}
-          // }
+            for (let i = 0; i < recipes.length; i++) {
+              const element = recipes[i];
+              if (element.images){
+                console.log("before image",recipes[i].images);
+                  recipes[i].images = readImageToBase64(recipes[i].images)
+                console.log("after image",recipes[i].images);}
+          }
         return res.json(recipes)
     } catch (error) {
         return next(error);
@@ -37,11 +37,15 @@ exports.getRecipeById = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(idRecipe))
         next({ message: 'id is not valid' });
     else {
+      try {
         const recipe = await Recipe.findById({_id:idRecipe}, { __v: false })
-          // if (recipe.images)
-          //   recipe.images= readImageToBase64(recipe.images)
-            .then(r=>{res.json(r);})
-            .catch(err => {next({ massage: 'the recipe didnt found', status: 404 })});
+        if (recipe.images)
+          recipe.images= readImageToBase64(recipe.images);
+        return res.json(recipe)
+      } catch (error) {
+        next({ massage: 'the recipe didnt found', status: 404 });
+      }
+        
     }
 }
 
@@ -50,11 +54,11 @@ exports.getByUserId = async (req, res, next) => {
     id=id.slice(1,id.length);
     try {
     const recipes = await Recipe.find({"user._id":id});
-    // for (let i = 0; i < recipes.length; i++) {
-    //         const element = recipes[i];
-    //         if (element.images)
-    //             recipes[i].images = readImageToBase64(recipes[i].images)
-    //     }
+    for (let i = 0; i < recipes.length; i++) {
+            const element = recipes[i];
+            if (element.images)
+                recipes[i].images = readImageToBase64(recipes[i].images)
+        }
       return res.json(recipes);
   } catch (error) {
       next(error);
@@ -70,33 +74,82 @@ exports.getRecipeByPreparationTime = async (req, res, next) => {
         .catch((err) => { next(err)});
 }
 
-//איך לשים את הUSER בתוך המקום?
+//איך לשים את ה USER בתוך המקום?
+
+// exports.addRecipe = async (req, res, next) => {
+//     try {
+//       if (req.token === null) {
+//         return next({ message: 'You are not authorized to add recipes for this user.', status: 401 });
+//       }
+//       console.log('Request Body:', req.body);
+//       console.log('Request File:', req.file);    
+//         const recipe = new Recipe(req.body);
+//       let category;
+//       for (let i = 0; i < req.body.category.length; i++) {
+//         category = await Category.findOne({description:req.body.category[i]});
+//         if(!category)
+//         {
+//           category = new Category({description:req.body.category[i],recipes:[]}); 
+//           await category.save();
+//         }
+//         // const minRecipe={_id:recipe._id,name:recipe.name,images:recipe.images};//צריך להכניס כל שדה בנפרד?
+//         category.recipes.push(recipe);
+//         await category.save();
+//         console.log("recipes",category.recipes);
+//       }
+//       // recipe.images=req.file;
+//           // recipe.user={_id:this.usersService.user?._id,name:this.usersService.user?.name};
+//       await recipe.save();
+//       res.status(201).json(recipe);
+    
+//     } catch (error) {
+//       next(error); 
+//     }
+//   };
+const express = require('express');
+
+
+
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
+
 exports.addRecipe = async (req, res, next) => {
-  
-    try {
-      if (req.token === null) {
-        return next({ message: 'You are not authorized to add recipes for this user.', status: 401 });
-      }
-      const recipe = new Recipe(req.body);
-      let category;
-      for (let i = 0; i < req.body.category.length; i++) {
-        category = await Category.findOne({description:req.body.category[i]});
-        if(!category)
-        {
-          category = new Category({description:req.body.category[i],recipes:[]}); 
-          await category.save();
-        }
-        // const minRecipe={_id:recipe._id,name:recipe.name,images:recipe.images};//צריך להכניס כל שדה בנפרד?
-        category.recipes.push(recipe);
+  try {
+    console.log('Request Body:', req.body);
+    console.log('Request File:', req.file);
+
+    const recipeData = {
+      ...req.body,
+      layers: JSON.parse(req.body.layers),
+      category: JSON.parse(req.body.category),
+      user: JSON.parse(req.body.user),
+      images: req.file ? req.file.filename : undefined
+    };
+
+    const recipe = new Recipe(recipeData);
+
+    for (let i = 0; i < recipeData.category.length; i++) {
+      let category = await Category.findOne({ description: recipeData.category[i] });
+      if (!category) {
+        category = new Category({ description: recipeData.category[i], recipes: [] });
         await category.save();
-        console.log("recipes",category.recipes);
       }
-      await recipe.save();
-      res.status(201).json(recipe);
-    } catch (error) {
-      next(error); 
+      category.recipes.push(recipe);
+      await category.save();
+      console.log('recipes', category.recipes);
     }
-  };
+
+    await recipe.save();
+    res.status(201).json(recipe);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 //צריך לעדכן ג"כ בקטגוריה?
 exports.updateRecipe = async (req, res, next) => {
     const id = req.params.id;
@@ -138,24 +191,16 @@ exports.deleteRecipe = async (req, res, next) => {
     }
 }
 
-
-const path = `${__dirname}/uploads`.replace('\\controllers', '')
+const pathToUploads = `${__dirname}/uploads`.replace('\\controllers', '');
 
 function readImageToBase64(images) {
-    // בדיקה אם הנתיב לתמונה קיים
-    if (!fs.existsSync(`${path}/${images}`)) {
-        // throw new Error(`Image path ${imagePath} does not exist.`);
-        return ''
+    const imagePath = `${pathToUploads}/${images}`;
+    if (!fs.existsSync(imagePath)) {
+        return '';
     }
-
-    // קריאת התמונה כקובץ בינארי
-
-    const imageBuffer = fs.readFileSync(`${path}/${images}`);
-
-    // המרת נתוני התמונה למחרוזת Base64
+    const imageBuffer = fs.readFileSync(imagePath);
     const base64String = Buffer.from(imageBuffer).toString('base64');
-
-    return 'data:image/jpeg;base64,' + base64String;
+    return `data:image/jpeg;base64,${base64String}`;
 }
 
 exports.deleteAllRecipe = async (req, res, next) => {
